@@ -18,7 +18,9 @@
       "mcp__supabase__list_tables",
       "Bash(npm install:*)",
       "mcp__playwright__browser_navigate",
-      "mcp__supabase__execute_sql"
+      "mcp__supabase__execute_sql",
+      "mcp__playwright__browser_fill_form",
+      "mcp__playwright__browser_handle_dialog"
     ]
   },
   "enableAllProjectMcpServers": true,
