@@ -8,17 +8,18 @@ interface TodoFormProps {
     description: string,
     priority: 'high' | 'medium' | 'low',
     dueDate: string
-  ) => void;
+  ) => void | Promise<void>;
+  disabled?: boolean;
 }
 
-export default function TodoForm({ onAddTodo }: TodoFormProps) {
+export default function TodoForm({ onAddTodo, disabled = false }: TodoFormProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState<'high' | 'medium' | 'low'>('medium');
   const [dueDate, setDueDate] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!title.trim()) {
@@ -36,13 +37,17 @@ export default function TodoForm({ onAddTodo }: TodoFormProps) {
       return;
     }
 
-    onAddTodo(title.trim(), description.trim(), priority, dueDate);
+    try {
+      await onAddTodo(title.trim(), description.trim(), priority, dueDate);
 
-    setTitle('');
-    setDescription('');
-    setPriority('medium');
-    setDueDate('');
-    setError('');
+      setTitle('');
+      setDescription('');
+      setPriority('medium');
+      setDueDate('');
+      setError('');
+    } catch (err) {
+      console.error('투도 추가 중 오류:', err);
+    }
   };
 
   return (
@@ -61,6 +66,7 @@ export default function TodoForm({ onAddTodo }: TodoFormProps) {
               setError('');
             }}
             maxLength={100}
+            disabled={disabled}
           />
           <span className="char-count">{title.length}/100</span>
         </div>
@@ -77,6 +83,7 @@ export default function TodoForm({ onAddTodo }: TodoFormProps) {
             }}
             maxLength={500}
             rows={3}
+            disabled={disabled}
           />
           <span className="char-count">{description.length}/500</span>
         </div>
@@ -90,6 +97,7 @@ export default function TodoForm({ onAddTodo }: TodoFormProps) {
               onChange={(e) =>
                 setPriority(e.target.value as 'high' | 'medium' | 'low')
               }
+              disabled={disabled}
             >
               <option value="high">높음 🔴</option>
               <option value="medium">중간 🟠</option>
@@ -107,13 +115,14 @@ export default function TodoForm({ onAddTodo }: TodoFormProps) {
                 setDueDate(e.target.value);
                 setError('');
               }}
+              disabled={disabled}
             />
           </div>
         </div>
 
         {error && <p className="error">{error}</p>}
 
-        <button type="submit" className="btn-primary">
+        <button type="submit" className="btn-primary" disabled={disabled}>
           투도 추가
         </button>
       </form>

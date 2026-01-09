@@ -10,7 +10,19 @@
       "mcp__playwright__browser_select_option",
       "mcp__playwright__browser_press_key",
       "mcp__playwright__browser_wait_for",
-      "mcp__playwright__browser_snapshot"
+      "mcp__playwright__browser_snapshot",
+      "mcp__supabase__create_project",
+      "mcp__supabase__get_project",
+      "mcp__supabase__get_publishable_keys",
+      "mcp__supabase__apply_migration",
+      "mcp__supabase__list_tables",
+      "Bash(npm install:*)",
+      "mcp__playwright__browser_navigate",
+      "mcp__supabase__execute_sql"
     ]
-  }
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "supabase"
+  ]
 }

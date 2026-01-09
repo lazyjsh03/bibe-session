@@ -1,24 +1,12 @@
-import { Todo, User } from './types';
+import { User } from './types';
 
 const STORAGE_KEYS = {
-  TODOS: 'bibe_todos',
   USER: 'bibe_user',
 };
 
+// 로컬 스토리지 매니저 (사용자 정보만 로컬에 저장)
 export const storageManager = {
-  // 투도 관리
-  getTodos: (): Todo[] => {
-    if (typeof window === 'undefined') return [];
-    const stored = localStorage.getItem(STORAGE_KEYS.TODOS);
-    return stored ? JSON.parse(stored) : [];
-  },
-
-  setTodos: (todos: Todo[]): void => {
-    if (typeof window === 'undefined') return;
-    localStorage.setItem(STORAGE_KEYS.TODOS, JSON.stringify(todos));
-  },
-
-  // 사용자 관리
+  // 사용자 관리 (localStorage 유지)
   getUser: (): User | null => {
     if (typeof window === 'undefined') return null;
     const stored = localStorage.getItem(STORAGE_KEYS.USER);
@@ -33,7 +21,28 @@ export const storageManager = {
   // 전체 초기화
   clearAll: (): void => {
     if (typeof window === 'undefined') return;
-    localStorage.removeItem(STORAGE_KEYS.TODOS);
     localStorage.removeItem(STORAGE_KEYS.USER);
   },
 };
+
+// Supabase Todo 타입 변환
+export const convertDbTodoToTodo = (dbTodo: any) => ({
+  id: dbTodo.id,
+  title: dbTodo.title,
+  description: dbTodo.description,
+  priority: dbTodo.priority,
+  dueDate: dbTodo.due_date || '',
+  completed: dbTodo.completed,
+  createdBy: dbTodo.created_by,
+  createdAt: dbTodo.created_at,
+});
+
+export const convertTodoToDbTodo = (todo: any) => ({
+  title: todo.title,
+  description: todo.description,
+  priority: todo.priority,
+  due_date: todo.dueDate || null,
+  completed: todo.completed,
+  created_by: todo.createdBy,
+  created_at: todo.createdAt,
+});

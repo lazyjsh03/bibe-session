@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/lazyjsh03/bibe-session#readme",
   "dependencies": {
+    "@supabase/supabase-js": "^2.90.1",
     "next": "^16.1.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"
